@@ -91,6 +91,7 @@ public class Hello implements EntryPoint {
 	    nameField.setText("Gwt User");
         // We can add style names to widgets
         sendButton.addStyleName("sendButton");
+        sendButton.className = "red"; // set button color to red
         
         // Focus the cursor on the name field when the app loads
         nameField.setFocus(true);
@@ -147,7 +148,7 @@ public class Hello implements EntryPoint {
                 errorLabel.setText("");
                 String textToServer = nameField.getText();
                 if (!FieldVerifier.isValidName(textToServer)) {
-                    errorLabel.setText("Please enter more than 4 caracters");
+                    errorLabel.setText("Name should have atleast 4 characters");
                     return;
                 }
 
@@ -173,6 +174,10 @@ public class Hello implements EntryPoint {
                                 serverResponseLabel.setHTML(result);
                                 dialogBox.center();
                                 closeButton.setFocus(true);
+                                
+                                //use CountCallService to add and show number of call message successfully sent to the server
+                                numerOfCompletedCall = countCallService.countCall(numberOfCompletedCall);
+                                
                             }
                         });
             }
@@ -182,6 +187,21 @@ public class Hello implements EntryPoint {
         MyHandler handler = new MyHandler();
         sendButton.addClickHandler(handler);
         nameField.addKeyUpHandler(handler);
+        
+        // Add a handler to clear the information of a person
+       clearPersonButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                nameField.setText= "";
+            }
+        });
+        
+        // use of countCallButton as the action button and countCallLabel to show the number of succeeded calls
+        countCallButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                countCallLabel.setText= numberOfCompletedCall;
+            }
+        });
+        
 
         /* Layout for person information*/
         FlexTable layout = new FlexTable();
